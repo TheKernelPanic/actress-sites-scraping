@@ -1,0 +1,4 @@
+data/**/*.json
+data/**/img/*
+!data/**/img/.gitkeep
+/.idea
