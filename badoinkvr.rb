@@ -11,7 +11,7 @@ unless ARGV[0] =~ /^[0-9]{1,3}$/
   raise ArgumentError.new 'Argument page must be a numeric'
 end
 
-amount_pages = ARGV[0].to_i
+pages = ARGV[0].to_i
 
 def get_url_per_page(number_page)
   return 'https://badoinkvr.com/vr-pornstars/'+String(number_page)
@@ -23,7 +23,7 @@ actress_image_regex = /\<img\sclass\=\"girl\-card\-image\slazyLoadContainer(?>\s
 fetched_data = []
 
 i = 1
-while i <= amount_pages
+while i <= pages
 
   puts 'Fetch from page '+String(i)
 
