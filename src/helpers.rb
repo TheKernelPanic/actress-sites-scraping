@@ -1,3 +1,5 @@
+require 'json'
+
 module Helpers
 
   def self.slug_actress_generate(canonicalName)
@@ -21,6 +23,12 @@ module Helpers
     end
 
     return arguments[0].to_i
+  end
+
+  def self.write_file(provider, data)
+    file = File.new('./data/' + provider + '/actress.json', 'w')
+    file.write JSON.pretty_generate(data)
+    file.close
   end
 
 end

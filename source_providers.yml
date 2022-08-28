@@ -1,0 +1,10 @@
+badoinkvr:
+  host: 'https://badoinkvr.com'
+  actresses_uri: 'vr-pornstars/{PAGE}'
+  pages: 37
+  classname: 'Providers::BadoInkVRProvider'
+virtualtaboo:
+  host: 'https://virtualtaboo.com'
+  actresses_uri: 'pornstars?page={PAGE}'
+  pages: 20
+  classname: 'Providers::VirtualTaboo'
