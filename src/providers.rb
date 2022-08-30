@@ -27,10 +27,18 @@ module Providers
     end
 
     def put_console_info(url)
-      puts "\e[32mFetching data from " + url + "\e[0m"
+      puts "\e[33mFetching data from " + url + "\e[0m"
     end
 
-    private :put_console_info
+    def iterate_pages(&handler)
+      i = 1
+      while i <= @pages
+        handler.call i
+        i += 1
+      end
+    end
+
+    protected :put_console_info
     protected :get_url_per_page
     protected :get_http_result
   end
@@ -38,17 +46,11 @@ module Providers
   class BadoInkVRProvider < Provider
 
     def fetch
+      self.iterate_pages do |page|
+        html_response = self.get_http_result self.get_url_per_page page
 
-      actress_name_regex = /\<span\sitemprop\=\"name\"\>([^<>]*)\<\/span\>/
-      actress_image_regex = /\<img\sclass\=\"girl\-card\-image\slazyLoadContainer(?>\sloaded)?\"\sdata\-src\=\"([^"]*)/
-
-      i = 1
-      while i <= @pages
-
-        html_response = self.get_http_result self.get_url_per_page i
-
-        list_of_names_matched = html_response.scan(actress_name_regex)
-        list_of_images_matched = html_response.scan(actress_image_regex)
+        list_of_names_matched = html_response.scan(/\<span\sitemprop\=\"name\"\>([^<>]*)\<\/span\>/)
+        list_of_images_matched = html_response.scan(/\<img\sclass\=\"girl\-card\-image\slazyLoadContainer(?>\sloaded)?\"\sdata\-src\=\"([^"]*)/)
 
         unless list_of_images_matched.length == list_of_names_matched.length
           raise RuntimeError.new 'List of names not assert with the list of images'
@@ -58,8 +60,6 @@ module Providers
           image_url = list_of_images_matched[index][0]
           @fetched_data.push({'name' => value[0], 'image_url' => image_url, 'slug': Helpers::slug_actress_generate(value[0]) })
         end
-
-        i += 1
       end
       @fetched_data
     end
@@ -69,14 +69,10 @@ module Providers
 
     def fetch
 
-      name_and_image_regex = /href\=\"[^\"]+\"\sstyle\=\"background-image\:\s?url\(\'([^\']+)\'\)\;\"\stitle\=\"([^"]+)\"/
+      self.iterate_pages do |page|
+        html_response = self.get_http_result self.get_url_per_page page
 
-      i = 1
-      while i <= @pages
-
-        html_response = self.get_http_result self.get_url_per_page i
-
-        list_elements_matched = html_response.scan(name_and_image_regex)
+        list_elements_matched = html_response.scan(/href\=\"[^\"]+\"\sstyle\=\"background-image\:\s?url\(\'([^\']+)\'\)\;\"\stitle\=\"([^"]+)\"/)
 
         if list_elements_matched.length === 0
           raise RuntimeError.new 'Empty lists matched elements'
@@ -85,8 +81,28 @@ module Providers
         list_elements_matched.each_with_index do |value|
           @fetched_data.push({'name' => value[1], 'image_url' => value[0], 'slug': Helpers::slug_actress_generate(value[1]) })
         end
+      end
+      @fetched_data
+    end
+  end
 
-        i += 1
+  class NaughtyAmerica < Provider
+
+    def fetch
+      self.iterate_pages do |page|
+        html_response = self.get_http_result self.get_url_per_page page
+
+        list_of_names_matched = html_response.scan(/class\=\"performer\-name\sellipsis\"\shref\=\"[^"]+\"\>([^\>\<]+)\<\/a>/)
+        list_of_images_matched = html_response.scan(/href\=\"([^"]+)\"\sclass\=\"performer\-image\"/)
+
+        unless list_of_images_matched.length == list_of_names_matched.length
+          raise RuntimeError.new 'List of names not assert with the list of images'
+        end
+
+        list_of_names_matched.each_with_index do |value, index|
+          image_url = list_of_images_matched[index][0]
+          @fetched_data.push({'name' => value[0], 'image_url' => image_url, 'slug': Helpers::slug_actress_generate(value[0]) })
+        end
       end
       @fetched_data
     end

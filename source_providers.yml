@@ -8,3 +8,8 @@ virtualtaboo:
   actresses_uri: 'pornstars?page={PAGE}'
   pages: 20
   classname: 'Providers::VirtualTaboo'
+naughtyamerica:
+  host: 'https://www.naughtyamerica.com'
+  actresses_uri: 'pornstars/top-rated?page={PAGE}'
+  pages: 71
+  classname: 'Providers::NaughtyAmerica'
