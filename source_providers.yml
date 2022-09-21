@@ -1,3 +1,8 @@
+#povr:
+#  host: 'https://povr.com'
+#  actresses_uri: 'pornstars?p={PAGE}'
+#  pages: 44
+#  classname: 'Providers::PoVr'
 badoinkvr:
   host: 'https://badoinkvr.com'
   actresses_uri: 'vr-pornstars/{PAGE}'

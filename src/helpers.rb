@@ -25,8 +25,8 @@ module Helpers
     return arguments[0].to_i
   end
 
-  def self.write_file(provider, data)
-    file = File.new('./data/' + provider + '/actress.json', 'w')
+  def self.write_file(filename, data)
+    file = File.new('./data/' + '/' + filename + '.json', 'w')
     file.write JSON.pretty_generate(data)
     file.close
   end

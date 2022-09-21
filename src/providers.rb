@@ -107,4 +107,24 @@ module Providers
       @fetched_data
     end
   end
+
+  class PoVr < Provider
+
+    def fetch
+      self.iterate_pages do |page|
+        html_response = self.get_http_result self.get_url_per_page page
+
+        list_elements_matched = html_response.scan(/class\=\"thumbnail__img\"\ssrc\=\"([^\"]+)\"\salt\=\"([^\"]+)\"/)
+
+        if list_elements_matched.length === 0
+          raise RuntimeError.new 'Empty lists matched elements'
+        end
+
+        list_elements_matched.each_with_index do |value|
+          @fetched_data.push({'name' => value[1], 'image_url' => value[0], 'slug': Helpers::slug_actress_generate(value[1]) })
+        end
+      end
+      @fetched_data
+    end
+  end
 end
