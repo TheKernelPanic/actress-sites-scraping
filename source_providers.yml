@@ -18,3 +18,8 @@ naughtyamerica:
   actresses_uri: 'pornstars/top-rated?page={PAGE}'
   pages: 71
   classname: 'Providers::NaughtyAmerica'
+vrbangers:
+  host: 'https://vrbangers.com'
+  actresses_uri: 'models/?page={PAGE}'
+  pages: 38
+  classname: 'Providers::VrBangers'
