@@ -30,8 +30,8 @@ module Providers
       puts "\e[33mFetching data from " + url + "\e[0m"
     end
 
-    def iterate_pages(&handler)
-      i = 1
+    def iterate_pages(initial_page=1, &handler)
+      i = initial_page
       while i <= @pages
         handler.call i
         i += 1
@@ -133,7 +133,7 @@ module Providers
   class PoVr < Provider
 
     def fetch
-      self.iterate_pages do |page|
+      self.iterate_pages 2 do |page|
         html_response = self.get_http_result self.get_url_per_page page
 
         list_elements_matched = html_response.scan(/class\=\"thumbnail__img\"\ssrc\=\"([^\"]+)\"\salt\=\"([^\"]+)\"/)
