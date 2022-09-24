@@ -149,4 +149,26 @@ module Providers
       @fetched_data
     end
   end
+
+  class WankzVR < Provider
+
+    def fetch
+      self.iterate_pages do |page|
+        html_response = self.get_http_result self.get_url_per_page page
+
+        list_of_names_matched = html_response.scan(/\"teaser\_\_title\"\>([^\>]+)/)
+        list_of_images_matched = html_response.scan(/src\=\"([^\"]+)\"\stype\=\"image\/jpeg\"/)
+
+        unless list_of_images_matched.length == list_of_names_matched.length
+          raise RuntimeError.new 'List of names not assert with the list of images'
+        end
+
+        list_of_names_matched.each_with_index do |value, index|
+          image_url = list_of_images_matched[index][0]
+          @fetched_data.push({'name' => value[0], 'image_url' => image_url, 'slug': Helpers::slug_actress_generate(value[0]) })
+        end
+      end
+      @fetched_data
+    end
+  end
 end

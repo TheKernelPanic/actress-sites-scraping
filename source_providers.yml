@@ -23,3 +23,8 @@ vrbangers:
   actresses_uri: 'models/?page={PAGE}'
   pages: 38
   classname: 'Providers::VrBangers'
+wankzvr:
+  host: 'https://es.wankzvr.com'
+  actresses_uri: 'pornstars?p={PAGE}'
+  pages: 27
+  classname: 'Providers::WankzVR'
