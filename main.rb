@@ -21,9 +21,15 @@ data.each do |provider_name, provider_data|
         "images": {}
       }
     end
-    actresses_dict[data[:slug]][:images][provider_name] = data["image_url"]
+
+    image_filename = Helpers::get_image_filename(provider_name, data["image_url"])
+
+    unless image_filename == nil
+      Helpers::download_and_write_image_file(image_filename, data["image_url"])
+      actresses_dict[data[:slug]][:images][provider_name] = image_filename
+    end
+
   end
-
-  Helpers::write_file("actresses", actresses_dict)
-
 end
+
+Helpers::write_json_file("actresses", actresses_dict)
