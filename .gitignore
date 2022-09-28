@@ -1,4 +1,4 @@
 data/**/*.json
-data/**/img/*
-!data/**/img/.gitkeep
 /.idea
+images/actress/*
+!images/actress/.gitkeep
