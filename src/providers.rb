@@ -49,7 +49,7 @@ module Providers
       self.iterate_pages do |page|
         html_response = self.get_http_result self.get_url_per_page page
 
-        list_of_names_matched = html_response.scan(/\<span\sitemprop\=\"name\"\>([^<>]*)\<\/span\>/)
+        list_of_names_matched = html_response.scan(/\<span\sitemprop\=\"name\"\>([^\<]+)\<\/span\>/)
         list_of_images_matched = html_response.scan(/\<img\sclass\=\"girl\-card\-image\slazyLoadContainer(?>\sloaded)?\"\sdata\-src\=\"([^"]*)/)
 
         unless list_of_images_matched.length == list_of_names_matched.length
@@ -92,7 +92,7 @@ module Providers
       self.iterate_pages do |page|
         html_response = self.get_http_result self.get_url_per_page page
 
-        list_of_names_matched = html_response.scan(/class\=\"performer\-name\sellipsis\"\shref\=\"[^"]+\"\>([^\>\<]+)\<\/a>/)
+        list_of_names_matched = html_response.scan(/class\=\"performer\-name\sellipsis\"\shref\=\"[^"]+\"\>([^\<]+)\<\/a>/)
         list_of_images_matched = html_response.scan(/href\=\"([^"]+)\"\sclass\=\"performer\-image\"/)
 
         unless list_of_images_matched.length == list_of_names_matched.length
@@ -156,7 +156,7 @@ module Providers
       self.iterate_pages do |page|
         html_response = self.get_http_result self.get_url_per_page page
 
-        list_of_names_matched = html_response.scan(/\"teaser\_\_title\"\>([^\>]+)/)
+        list_of_names_matched = html_response.scan(/\"teaser\_\_title\"\>([^\<]+)/)
         list_of_images_matched = html_response.scan(/src\=\"([^\"]+)\"\stype\=\"image\/jpeg\"/)
 
         unless list_of_images_matched.length == list_of_names_matched.length
